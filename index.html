@@ -295,32 +295,32 @@
 
             <div class="showcase-grid">
                 <div class="card">
-                    <span class="card-tag">1 — Ingest</span>
+                    <span class="card-tag">1 - Ingest</span>
                     <h3>Training Data Submission</h3>
                     <p>Manufacturing data arrives as a JSON payload through the API. GENESIS automatically identifies the data type (tabular or time-series) and routes it through the appropriate preprocessing strategy. Sensor readings are normalized, categorical variables are encoded, and missing values are handled without manual intervention.</p>
                 </div>
                 <div class="card">
-                    <span class="card-tag">2 — Train</span>
+                    <span class="card-tag">2 - Train</span>
                     <h3>Dynamic Model Adaptation</h3>
                     <p>The system analyzes the incoming data structure and immediately begins training a CTGAN or VAE model with no manual configuration required. Hyperparameters are tuned dynamically based on data characteristics. For time-series inputs, temporal dependencies and experiment groupings are preserved throughout the learning process.</p>
                 </div>
                 <div class="card">
-                    <span class="card-tag">3 — Persist</span>
+                    <span class="card-tag">3 - Persist</span>
                     <h3>Model Lifecycle Management</h3>
                     <p>Once training completes, the model is saved alongside structural metadata and is ready for deployment. Trained models can be shared across multiple manufacturing facilities, versioned, and continuously improved through fine-tuning as new production data becomes available.</p>
                 </div>
                 <div class="card">
-                    <span class="card-tag">4 — Generate</span>
+                    <span class="card-tag">4 - Generate</span>
                     <h3>Schema-Based or Data-Guided Inference</h3>
                     <p>During inference, GENESIS operates in two modes. In schema-based mode, only the data structure is provided: GENESIS reconstructs statistically consistent samples without requiring the original dataset, protecting sensitive IP. In data-guided mode, reference data steers the generation process for higher contextual fidelity.</p>
                 </div>
                 <div class="card">
-                    <span class="card-tag">5 — Transform</span>
+                    <span class="card-tag">5 - Transform</span>
                     <h3>Function-Enhanced Generation</h3>
                     <p>Custom functions encode manufacturing domain rules directly into the generation pipeline. Users define priority-ordered transformations (quality metric calculations, defect severity classifications, production parameter adjustments) that are applied either during generation from scratch or as post-processing over existing synthetic datasets.</p>
                 </div>
                 <div class="card">
-                    <span class="card-tag">6 — Evaluate</span>
+                    <span class="card-tag">6 - Evaluate</span>
                     <h3>Integrated Quality Assessment</h3>
                     <p>GENESIS calculates statistical distances between real and generated datasets, assesses distribution adherence, and measures sample novelty. Evaluation results are delivered as structured JSON reports, ready for integration with quality management systems or MLOps pipelines.</p>
                 </div>
@@ -378,11 +378,11 @@
                         <p>The outermost layer is designed with ease of use as its primary goal. It exposes all GENESIS capabilities through both a visual web interface and a programmatic API, so that data scientists and developers can interact with the system in whichever way fits their workflow. Users submit requests, monitor job progress, retrieve generated datasets, and inspect quality reports without needing to understand the internals of the generation process. The interface abstracts away all complexity and presents GENESIS as a single, coherent service.</p>
                     </div>
                     <div class="level-item">
-                        <strong>Layer 2: Middleware — Orchestrator, Input Coherence Check, and Persistence</strong>
+                        <strong>Layer 2: Middleware - Orchestrator, Input Coherence Check, and Persistence</strong>
                         <p>The middleware layer is the operational backbone of the system. An Orchestrator component receives every incoming request from the interface layer, validates it, and routes it to the appropriate downstream service. Before any processing begins, an Input Coherence Check inspects the submitted payload for structural consistency: verifying that data schemas are well-formed, that required fields are present, and that configuration parameters fall within acceptable ranges. This validation step prevents malformed or contradictory inputs from propagating into the generation pipeline. Alongside orchestration and validation, the middleware manages Persistence: trained models, structural metadata, and generation histories are stored and versioned here, ensuring that every artifact produced by GENESIS remains retrievable and reproducible across sessions and facilities.</p>
                     </div>
                     <div class="level-item">
-                        <strong>Layer 3: Generator — Server and Core Library</strong>
+                        <strong>Layer 3: Generator - Server and Core Library</strong>
                         <p>The innermost layer is where synthetic data is actually produced. It is composed of two tightly integrated components: a Generator Server that handles the execution lifecycle of each generation or training job, and a Core Library that implements the full suite of generative AI capabilities. The core library encapsulates the CTGAN and VAE model architectures, the adaptive training logic, the preprocessing and post-processing pipelines, the custom function execution engine, and the statistical evaluation suite. When a job arrives from the middleware, the server instantiates the appropriate core library components, runs the requested operation, and returns the results upward through the stack. Because the core library is encapsulated as a standalone component, it can be updated, replaced, or extended independently of the rest of the system, making it straightforward to integrate new generative architectures as the field evolves.</p>
                     </div>
                 </div>
