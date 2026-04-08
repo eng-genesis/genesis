@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENESIS - GENErative System for Industrial Synthetic data generation</title>
+
+    <style>
+        :root {
+            --primary: #090909;
+            --primary-light: #1f1f1f;
+            --accent: #C51B88;
+            --accent-dark: #9A156A;
+            --accent-light: #D549A0;
+            --bg-dark: #090909;
+            --bg-soft: #f5f5f5;
+            --bg-card: #FCFCFC;
+            --text-dark: #090909;
+            --text-muted: #595959;
+            --white: #FCFCFC;
+            --border: #e5e5e5;
+            --shadow-sm: rgba(197, 27, 136, 0.08);
+            --shadow-md: rgba(197, 27, 136, 0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'CocoEng', sans-serif; color: var(--text-dark); background: var(--white); line-height: 1.7; }
+
+        /* --- NAVIGATION --- */
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 8%; border-bottom: 1px solid var(--border); background: var(--white);
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); background: rgba(252, 252, 252, 0.95);
+        }
+        .logo-box img { height: 48px; display: block; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-dark); font-size: 13px; font-weight: 600;
+            margin: 0 16px; text-transform: uppercase; letter-spacing: 0.8px;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            padding-bottom: 2px; border-bottom: 2px solid transparent;
+        }
+        .nav-links a:hover { color: var(--accent); border-bottom: 2px solid var(--accent); }
+        .nav-utils { display: flex; align-items: center; gap: 20px; }
+
+        /* --- SEARCH BAR --- */
+        .search-container { position: relative; }
+        .search-input {
+            padding: 8px 36px 8px 14px; border: 1px solid var(--border); border-radius: 6px;
+            font-size: 14px; font-family: 'CocoEng', sans-serif; outline: none; width: 200px;
+            transition: all 0.3s ease; background: var(--bg-soft);
+        }
+        .search-input:focus {
+            border-color: var(--accent); background: var(--white); width: 250px;
+            box-shadow: 0 2px 8px var(--shadow-sm);
+        }
+        .search-icon {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            pointer-events: none; opacity: 0.5;
+        }
+        .highlight {
+            background-color: var(--accent-light); padding: 2px 4px; border-radius: 3px;
+            font-weight: 500; color: var(--white);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-dark {
+            position: relative; min-height: 500px; display: flex; align-items: center;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-light) 100%);
+            color: var(--white); padding: 100px 10%; overflow: hidden;
+        }
+        .hero-dark::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="1" fill="rgba(197,27,136,0.15)"/></svg>');
+            opacity: 0.3;
+        }
+        .hero-content { max-width: 900px; position: relative; z-index: 1; }
+        .hero-header { margin-bottom: 40px; }
+        .hero-logo-section { display: flex; align-items: center; gap: 24px; }
+        .hero-text-section { display: flex; flex-direction: column; gap: 8px; }
+        .hero-title {
+            font-size: 52px; font-weight: 700; margin: 0;
+            color: var(--accent) !important; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .hero-subtitle {
+            font-size: 18px; font-weight: 400; margin: 0;
+            color: var(--white); opacity: 0.9;
+        }
+        .hero-dark h1.title-light {
+            font-size: 48px; font-weight: 700; margin-bottom: 24px; margin-top: 10px;
+            color: var(--white); text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .hero-dark p { font-size: 18px; font-weight: 400; line-height: 1.8; margin-bottom: 1.2rem; }
+
+        /* --- LAYOUT --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 80px 5%; }
+        .bg-soft { background-color: var(--bg-soft); }
+        .bg-dark-section {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-light) 100%);
+            position: relative; overflow: hidden;
+        }
+        .bg-dark-section::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="1" fill="rgba(197,27,136,0.15)"/></svg>');
+            opacity: 0.3;
+        }
+        .section-label-light { color: var(--accent-light); border-bottom-color: var(--accent-light); }
+        .title-light { color: var(--white); text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .text-light { color: rgba(252, 252, 252, 0.9); line-height: 1.9; }
+        .text-light strong { color: var(--accent-light); font-weight: 600; }
+        .section-label {
+            color: var(--accent); text-transform: uppercase; font-weight: 700;
+            font-size: 12px; letter-spacing: 1.8px; margin-bottom: 16px; display: inline-block;
+            padding-bottom: 8px; border-bottom: 2px solid var(--accent);
+        }
+        h2 { font-size: 36px; color: var(--primary); margin-bottom: 32px; font-weight: 700; line-height: 1.3; }
+        h3 { font-size: 24px; color: var(--primary); margin: 28px 0 16px 0; font-weight: 600; }
+        h4 { font-size: 19px; color: var(--primary); margin-bottom: 12px; font-weight: 600; }
+        p { margin-bottom: 1.5rem; color: var(--text-muted); line-height: 1.8; }
+        ul { margin-bottom: 1.5rem; padding-left: 20px; color: var(--text-muted); }
+        li { margin-bottom: 12px; line-height: 1.7; }
+        strong { color: var(--text-dark); font-weight: 600; }
+
+        /* --- SHOWCASE CARDS --- */
+        .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px; margin-top: 40px; }
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border); padding: 38px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 8px;
+            box-shadow: 0 2px 8px var(--shadow-sm);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px var(--shadow-md);
+            border-color: var(--accent-light);
+        }
+        .card-tag {
+            font-size: 11px; font-weight: 700; color: var(--accent);
+            text-transform: uppercase; margin-bottom: 14px; display: block; letter-spacing: 1.2px;
+        }
+
+        /* --- FEATURES GRID --- */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 40px; }
+        .feature-box {
+            background: var(--white); border-radius: 12px; padding: 38px;
+            display: flex; flex-direction: column; justify-content: space-between; min-height: 300px;
+            border: 1px solid var(--border); transition: all 0.3s ease;
+            box-shadow: 0 2px 8px var(--shadow-sm);
+        }
+        .feature-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px var(--shadow-md);
+            border-color: var(--accent-light);
+        }
+        .feature-icon {
+            font-size: 28px; margin-bottom: 20px;
+            background: linear-gradient(135deg, #fce6f3 0%, #fad4eb 100%);
+            width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; border: 1px solid var(--accent-light);
+        }
+
+        /* --- LEVELS SECTION --- */
+        .levels-wrap {
+            border-left: 4px solid var(--accent); padding-left: 36px; margin-top: 40px;
+            position: relative;
+        }
+        .levels-wrap::before {
+            content: ''; position: absolute; left: -2px; top: 0; bottom: 0; width: 4px;
+            background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 100%);
+        }
+        .level-item { margin-bottom: 44px; }
+        .level-item strong {
+            color: var(--primary); font-size: 20px; display: block; margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        /* --- TABLE --- */
+        .table-container { overflow-x: auto; margin-top: 36px; border: 1px solid var(--border); border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; background: var(--white); }
+        th {
+            text-align: left; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--white); padding: 18px 24px; font-size: 14px; text-transform: uppercase;
+            font-weight: 600; letter-spacing: 0.8px;
+        }
+        td { padding: 22px 24px; border-bottom: 1px solid var(--border); font-size: 15px; }
+        td strong { color: var(--accent-dark); font-weight: 600; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: var(--bg-soft); }
+
+        /* --- CONTACT SECTION --- */
+        .contact-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px; margin-top: 40px;
+        }
+        .contact-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            padding: 40px; border-radius: 12px; text-align: center;
+            transition: all 0.3s ease; box-shadow: 0 2px 8px var(--shadow-sm);
+        }
+        .contact-card:hover {
+            transform: translateY(-4px); box-shadow: 0 12px 32px var(--shadow-md);
+            border-color: var(--accent-light);
+        }
+        .contact-icon {
+            font-size: 36px; margin-bottom: 20px;
+            background: linear-gradient(135deg, #fce6f3 0%, #fad4eb 100%);
+            width: 70px; height: 70px; display: flex; align-items: center;
+            justify-content: center; border-radius: 50%; margin: 0 auto 20px;
+            border: 2px solid var(--accent-light);
+        }
+        .contact-card h4 { font-size: 20px; margin-bottom: 12px; color: var(--primary); }
+        .contact-card p { margin-bottom: 10px; font-size: 15px; }
+        .contact-detail { color: var(--text-muted); font-size: 14px; font-style: italic; }
+        .contact-link {
+            display: inline-block; margin-top: 8px; color: var(--accent);
+            text-decoration: none; font-weight: 600; font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .contact-link:hover { color: var(--accent-dark); text-decoration: underline; }
+        .repo-button {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: var(--white); padding: 12px 28px; border-radius: 8px;
+            text-decoration: none; font-weight: 600; margin-top: 12px;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px var(--shadow-md);
+        }
+        .repo-button:hover {
+            transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow-md);
+            background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 100%);
+        }
+        .github-icon { font-size: 18px; }
+
+        /* --- FOOTER --- */
+        footer {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-light) 100%);
+            color: var(--white); padding: 70px 8% 35px; text-align: center;
+            border-top: 3px solid var(--accent);
+        }
+        .copyright { font-size: 13px; color: #ffffff; opacity: 0.65; margin-top: 24px; letter-spacing: 0.3px; }
+
+        @media (max-width: 768px) {
+            .hero-dark { padding: 60px 6%; }
+            .hero-title { font-size: 38px; }
+            .top-nav { padding: 15px 5%; flex-wrap: wrap; }
+            .nav-links { order: 3; width: 100%; margin-top: 15px; text-align: center; }
+            .nav-links a { margin: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="logo-box">
+            <span style="font-size: 24px; font-weight: 800; color: var(--accent); letter-spacing: 2px;">GENESIS</span>
+        </div>
+        <div class="nav-links">
+            <a href="#showcase">Data Flows</a>
+            <a href="#overview">Overview</a>
+            <a href="#features">Features</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="nav-utils">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search..." class="search-input">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </nav>
+
+    <header id="overview" class="hero-dark">
+        <div class="hero-content">
+            <div class="hero-header">
+                <div class="hero-logo-section">
+                    <div class="hero-text-section">
+                        <h1 class="hero-title">GENESIS</h1>
+                        <p class="hero-subtitle">GENESIS is a specialized synthetic data generation system that transforms real manufacturing data into high-fidelity synthetic datasets, protecting intellectual property while fueling industrial AI.</p>
+                    </div>
+                </div>
+            </div>
+            <span class="section-label section-label-light">System Overview</span>
+            <h1 class="title-light">What is GENESIS?</h1>
+            <p class="text-light"><strong>GENESIS</strong> is a manufacturing-focused synthetic data generation system built on state-of-the-art generative AI architectures. It learns the statistical structure of real production data and generates novel, privacy-safe datasets that faithfully replicate the behavior of the original manufacturing processes.</p>
+            <p class="text-light">Rather than simply copying data, GENESIS actively models complex distributions across mixed data types: from continuous sensor readings and categorical defect classifications to time-series production sequences. It adapts on-the-fly to new data, manages the full model lifecycle, and embeds manufacturing domain knowledge directly into the generation pipeline through a flexible custom function system.</p>
+        </div>
+    </header>
+
+    <main>
+        <section id="showcase" class="container">
+            <span class="section-label">Data Flows</span>
+            <h2>How GENESIS Processes Manufacturing Data</h2>
+            <p>To understand how GENESIS operates in practice, consider a <strong>production line dataset lifecycle</strong>: from raw sensor ingestion, through adaptive model training, to synthetic data generation and quality validation.</p>
+
+            <div class="showcase-grid">
+                <div class="card">
+                    <span class="card-tag">1 — Ingest</span>
+                    <h3>Training Data Submission</h3>
+                    <p>Manufacturing data arrives as a JSON payload through the API. GENESIS automatically identifies the data type (tabular or time-series) and routes it through the appropriate preprocessing strategy. Sensor readings are normalized, categorical variables are encoded, and missing values are handled without manual intervention.</p>
+                </div>
+                <div class="card">
+                    <span class="card-tag">2 — Train</span>
+                    <h3>Dynamic Model Adaptation</h3>
+                    <p>The system analyzes the incoming data structure and immediately begins training a CTGAN or VAE model with no manual configuration required. Hyperparameters are tuned dynamically based on data characteristics. For time-series inputs, temporal dependencies and experiment groupings are preserved throughout the learning process.</p>
+                </div>
+                <div class="card">
+                    <span class="card-tag">3 — Persist</span>
+                    <h3>Model Lifecycle Management</h3>
+                    <p>Once training completes, the model is saved alongside structural metadata and is ready for deployment. Trained models can be shared across multiple manufacturing facilities, versioned, and continuously improved through fine-tuning as new production data becomes available.</p>
+                </div>
+                <div class="card">
+                    <span class="card-tag">4 — Generate</span>
+                    <h3>Schema-Based or Data-Guided Inference</h3>
+                    <p>During inference, GENESIS operates in two modes. In schema-based mode, only the data structure is provided: GENESIS reconstructs statistically consistent samples without requiring the original dataset, protecting sensitive IP. In data-guided mode, reference data steers the generation process for higher contextual fidelity.</p>
+                </div>
+                <div class="card">
+                    <span class="card-tag">5 — Transform</span>
+                    <h3>Function-Enhanced Generation</h3>
+                    <p>Custom functions encode manufacturing domain rules directly into the generation pipeline. Users define priority-ordered transformations (quality metric calculations, defect severity classifications, production parameter adjustments) that are applied either during generation from scratch or as post-processing over existing synthetic datasets.</p>
+                </div>
+                <div class="card">
+                    <span class="card-tag">6 — Evaluate</span>
+                    <h3>Integrated Quality Assessment</h3>
+                    <p>GENESIS calculates statistical distances between real and generated datasets, assesses distribution adherence, and measures sample novelty. Evaluation results are delivered as structured JSON reports, ready for integration with quality management systems or MLOps pipelines.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="container">
+            <span class="section-label">Core Capabilities</span>
+            <h2>Key Features</h2>
+            <p>GENESIS provides a comprehensive suite of capabilities designed to transform raw manufacturing data into production-ready synthetic datasets, enabling industrial AI development without compromising operational data privacy.</p>
+
+            <div class="features-grid">
+                <div class="feature-box">
+                    <div class="feature-icon">🧠</div>
+                    <h4>CTGAN &amp; VAE Architectures</h4>
+                    <p>State-of-the-art generative models designed to learn complex distributions from manufacturing datasets, handling mixed continuous, categorical, and time-series data types.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Training-on-the-Fly</h4>
+                    <p>Automatic model configuration and immediate training upon data submission, with no manual hyperparameter tuning. The system adapts dynamically to each new production line or equipment type.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">🔒</div>
+                    <h4>Schema-Based Generation</h4>
+                    <p>Generate realistic manufacturing data from structural skeletons alone. No original dataset required, ensuring intellectual property protection while preserving statistical fidelity.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">🔁</div>
+                    <h4>Model Lifecycle Management</h4>
+                    <p>Full support for training, saving, loading, versioning, and fine-tuning. Models persist across facilities and continuously improve as new production data is accumulated.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">🛠️</div>
+                    <h4>Custom Function Application</h4>
+                    <p>Encode manufacturing domain knowledge directly into generation workflows. Define priority-ordered transformations for quality metrics, defect classifications, and business rules.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">📊</div>
+                    <h4>Integrated Quality Evaluation</h4>
+                    <p>Built-in statistical evaluation metrics purpose-built for manufacturing data. Every generation job includes a structured quality report measuring distribution fidelity and sample novelty.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="bg-soft">
+            <div class="container">
+                <span class="section-label">Architecture</span>
+                <h2>System Architecture Layers</h2>
+                <p>GENESIS is designed as a microservice-based layered architecture, where each tier has a clearly defined responsibility and communicates with adjacent layers through well-defined interfaces. This separation of concerns makes the system easy to extend, deploy, and integrate into existing industrial infrastructures.</p>
+
+                <div class="levels-wrap">
+                    <div class="level-item">
+                        <strong>Layer 1: User Interface</strong>
+                        <p>The outermost layer is designed with ease of use as its primary goal. It exposes all GENESIS capabilities through both a visual web interface and a programmatic API, so that data scientists and developers can interact with the system in whichever way fits their workflow. Users submit requests, monitor job progress, retrieve generated datasets, and inspect quality reports without needing to understand the internals of the generation process. The interface abstracts away all complexity and presents GENESIS as a single, coherent service.</p>
+                    </div>
+                    <div class="level-item">
+                        <strong>Layer 2: Middleware — Orchestrator, Input Coherence Check, and Persistence</strong>
+                        <p>The middleware layer is the operational backbone of the system. An Orchestrator component receives every incoming request from the interface layer, validates it, and routes it to the appropriate downstream service. Before any processing begins, an Input Coherence Check inspects the submitted payload for structural consistency: verifying that data schemas are well-formed, that required fields are present, and that configuration parameters fall within acceptable ranges. This validation step prevents malformed or contradictory inputs from propagating into the generation pipeline. Alongside orchestration and validation, the middleware manages Persistence: trained models, structural metadata, and generation histories are stored and versioned here, ensuring that every artifact produced by GENESIS remains retrievable and reproducible across sessions and facilities.</p>
+                    </div>
+                    <div class="level-item">
+                        <strong>Layer 3: Generator — Server and Core Library</strong>
+                        <p>The innermost layer is where synthetic data is actually produced. It is composed of two tightly integrated components: a Generator Server that handles the execution lifecycle of each generation or training job, and a Core Library that implements the full suite of generative AI capabilities. The core library encapsulates the CTGAN and VAE model architectures, the adaptive training logic, the preprocessing and post-processing pipelines, the custom function execution engine, and the statistical evaluation suite. When a job arrives from the middleware, the server instantiates the appropriate core library components, runs the requested operation, and returns the results upward through the stack. Because the core library is encapsulated as a standalone component, it can be updated, replaced, or extended independently of the rest of the system, making it straightforward to integrate new generative architectures as the field evolves.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <section id="contact" class="container">
+        <span class="section-label">Get in Touch</span>
+        <h2>Contact &amp; Resources</h2>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-icon">📧</div>
+                <h4>Email</h4>
+                <p>For inquiries and technical support</p>
+                <a href="mailto:angelo.marguglio@eng.it" class="contact-link">angelo.marguglio@eng.it</a>
+                <a href="mailto:mattiagiuseppe.marzano@eng.it" class="contact-link">mattiagiuseppe.marzano@eng.it</a>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">🏢</div>
+                <h4>Organization</h4>
+                <p>Engineering Ingegneria Informatica S.p.A.</p>
+                <p class="contact-detail">Research &amp; Innovation</p>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">💻</div>
+                <h4>Source Code</h4>
+                <p>Explore the codebase and documentation</p>
+                <a href="https://github.com/Engineering-Research-and-Development/synthetic-data-engine" target="_blank" class="repo-button">
+                    <span class="github-icon">⚡</span>
+                    View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p style="font-size: 28px; font-weight: 800; color: var(--accent); letter-spacing: 3px; margin-bottom: 12px;">GENESIS</p>
+        <p class="copyright"><strong style="opacity:1;">GENESIS</strong> · GENErative System for Industrial Synthetic data generation</p>
+        <p class="copyright">© 2026 Engineering Research &amp; Innovation. All rights reserved.</p>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        const searchInput = document.getElementById('searchInput');
+        let originalContent = {};
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+
+            if (Object.keys(originalContent).length > 0) {
+                Object.keys(originalContent).forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) element.innerHTML = originalContent[id];
+                });
+                originalContent = {};
+            }
+
+            if (searchTerm === '') return;
+
+            const searchableElements = document.querySelectorAll('p, h1, h2, h3, h4, li, td, .card-tag');
+            let firstMatch = null;
+
+            searchableElements.forEach((element, index) => {
+                const text = element.textContent;
+                if (text.toLowerCase().includes(searchTerm)) {
+                    const elementId = 'searchable-' + index;
+                    element.id = elementId;
+                    if (!originalContent[elementId]) originalContent[elementId] = element.innerHTML;
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    element.innerHTML = element.innerHTML.replace(regex, '<span class="highlight">$1</span>');
+                    if (!firstMatch) firstMatch = element;
+                }
+            });
+
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
