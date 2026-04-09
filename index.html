@@ -77,6 +77,10 @@
         .hero-header { margin-bottom: 40px; }
         .hero-logo-section { display: flex; align-items: center; gap: 24px; }
         .hero-text-section { display: flex; flex-direction: column; gap: 8px; }
+        .hero-logo {
+            height: 120px; display: block;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+        }
         .hero-title {
             font-size: 52px; font-weight: 700; margin: 0;
             color: var(--accent) !important; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
@@ -250,7 +254,7 @@
     <nav class="top-nav">
         
         <div class="logo-box">
-            <img src="https://raw.githubusercontent.com/eng-genesis/genesis/refs/heads/master/docs/images/genesis_logo.png" alt=GENESIS>
+            <img src="https://raw.githubusercontent.com/eng-genesis/genesis/refs/heads/master/docs/images/genesis_logo.png" alt="GENESIS">
         </div>
         <div class="logo-box">
             <img src="https://raw.githubusercontent.com/Engineering-Research-and-Development/autopilot/main/docs/imgs/eng.png" alt="Engineering Logo">
@@ -278,6 +282,7 @@
                         <h1 class="hero-title">GENESIS</h1>
                         <p class="hero-subtitle">GENESIS is a specialized synthetic data generation system that transforms real manufacturing data into high-fidelity synthetic datasets, protecting intellectual property while fueling industrial AI.</p>
                     </div>
+                    <img src="https://raw.githubusercontent.com/eng-genesis/genesis/refs/heads/master/docs/images/genesis_logo.png" alt="GENESIS" class="hero-logo">
                 </div>
             </div>
             <span class="section-label section-label-light">System Overview</span>
