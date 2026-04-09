@@ -263,6 +263,8 @@
             <a href="#showcase">Data Flows</a>
             <a href="#overview">Overview</a>
             <a href="#features">Features</a>
+            <a href="#uniqueness">Uniqueness</a>
+            <a href="#datatypes">Data Types</a>
             <a href="#architecture">Architecture</a>
             <a href="#contact">Contact</a>
         </div>
@@ -307,7 +309,7 @@
                 <div class="card">
                     <span class="card-tag">2 - Train</span>
                     <h3>Dynamic Model Adaptation</h3>
-                    <p>The system analyzes the incoming data structure and immediately begins training a CTGAN or VAE model with no manual configuration required. Hyperparameters are tuned dynamically based on data characteristics. For time-series inputs, temporal dependencies and experiment groupings are preserved throughout the learning process.</p>
+                    <p>The system analyzes the incoming data structure and immediately begins training. Hyperparameters are tuned dynamically based on data characteristics. For time-series inputs, temporal dependencies and experiment groupings are preserved throughout the learning process.</p>
                 </div>
                 <div class="card">
                     <span class="card-tag">3 - Persist</span>
@@ -317,7 +319,7 @@
                 <div class="card">
                     <span class="card-tag">4 - Generate</span>
                     <h3>Schema-Based or Data-Guided Inference</h3>
-                    <p>During inference, GENESIS operates in two modes. In schema-based mode, only the data structure is provided: GENESIS reconstructs statistically consistent samples without requiring the original dataset, protecting sensitive IP. In data-guided mode, reference data steers the generation process for higher contextual fidelity.</p>
+                    <p>During inference, GENESIS operates in two modes. In schema-based mode, a structural metadata descriptor (data skeleton) communicates column types, constraints, and statistical properties to the trained model — enabling generation without resubmitting the original dataset. In data-guided mode, reference data steers the generation process for higher contextual fidelity.</p>
                 </div>
                 <div class="card">
                     <span class="card-tag">5 - Transform</span>
@@ -327,7 +329,7 @@
                 <div class="card">
                     <span class="card-tag">6 - Evaluate</span>
                     <h3>Integrated Quality Assessment</h3>
-                    <p>GENESIS calculates statistical distances between real and generated datasets, assesses distribution adherence, and measures sample novelty. Evaluation results are delivered as structured JSON reports, ready for integration with quality management systems or MLOps pipelines.</p>
+                    <p>GENESIS calculates statistical distances between real and generated datasets, assesses distribution adherence, and measures sample novelty. Evaluation results are delivered as structured JSON reports for further inspection or downstream consumption.</p>
                 </div>
             </div>
         </section>
@@ -346,12 +348,12 @@
                 <div class="feature-box">
                     <div class="feature-icon">⚡</div>
                     <h4>Training-on-the-Fly</h4>
-                    <p>Automatic model configuration and immediate training upon data submission, with no manual hyperparameter tuning. The system adapts dynamically to each new production line or equipment type.</p>
+                    <p>Dynamic model configuration and immediate training upon data submission, with hyperparameters tuned to each dataset's characteristics. The system adapts to each new production line or equipment type without requiring manual setup.</p>
                 </div>
                 <div class="feature-box">
                     <div class="feature-icon">🔒</div>
                     <h4>Schema-Based Generation</h4>
-                    <p>Generate realistic manufacturing data from structural skeletons alone. No original dataset required, ensuring intellectual property protection while preserving statistical fidelity.</p>
+                    <p>Generate realistic manufacturing data using a structural metadata descriptor (data skeleton) that communicates column types, constraints, and relationships to the trained model. After initial training on real data, inference can proceed from schema alone — without resubmitting the original dataset each time.</p>
                 </div>
                 <div class="feature-box">
                     <div class="feature-icon">🔁</div>
@@ -363,10 +365,54 @@
                     <h4>Custom Function Application</h4>
                     <p>Encode manufacturing domain knowledge directly into generation workflows. Define priority-ordered transformations for quality metrics, defect classifications, and business rules.</p>
                 </div>
-                <div class="feature-box">
-                    <div class="feature-icon">📊</div>
-                    <h4>Integrated Quality Evaluation</h4>
-                    <p>Built-in statistical evaluation metrics purpose-built for manufacturing data. Every generation job includes a structured quality report measuring distribution fidelity and sample novelty.</p>
+            </div>
+        </section>
+
+        <section id="uniqueness" class="bg-dark-section">
+            <div class="container" style="position:relative; z-index:1;">
+                <span class="section-label section-label-light">Uniqueness</span>
+                <h2 class="title-light">Integrated Evaluation</h2>
+                <p class="text-light">What truly sets GENESIS apart is the seamless integration of statistical quality evaluation directly into the generation pipeline — not as an afterthought, but as a first-class component of every production run.</p>
+
+                <div class="showcase-grid" style="margin-top:40px;">
+                    <div class="card" style="background: rgba(252,252,252,0.06); border-color: rgba(197,27,136,0.3);">
+                        <div class="feature-icon" style="margin-bottom:20px;">📊</div>
+                        <h4 class="title-light" style="font-size:19px; margin-bottom:12px;">Built-in Quality Metrics</h4>
+                        <p class="text-light">Every generation job automatically runs a suite of statistical evaluation metrics purpose-built for manufacturing data. Distribution fidelity, feature-level divergence, and sample novelty are all measured without any additional configuration.</p>
+                    </div>
+                    <div class="card" style="background: rgba(252,252,252,0.06); border-color: rgba(197,27,136,0.3);">
+                        <div class="feature-icon" style="margin-bottom:20px;">📋</div>
+                        <h4 class="title-light" style="font-size:19px; margin-bottom:12px;">Structured Quality Reports</h4>
+                        <p class="text-light">Evaluation results are delivered as structured JSON reports alongside the generated dataset. Each report quantifies how faithfully the synthetic data reproduces the statistical properties of the original, giving teams an objective measure of generation quality.</p>
+                    </div>
+                    <div class="card" style="background: rgba(252,252,252,0.06); border-color: rgba(197,27,136,0.3);">
+                        <div class="feature-icon" style="margin-bottom:20px;">🎯</div>
+                        <h4 class="title-light" style="font-size:19px; margin-bottom:12px;">Manufacturing-Grade Standards</h4>
+                        <p class="text-light">Unlike generic evaluation frameworks, GENESIS applies metrics calibrated for industrial data: measuring temporal coherence in time-series outputs, handling mixed-type columns, and accounting for the statistical properties typical of production-line measurements.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="datatypes" class="container">
+            <span class="section-label">Supported Data Types</span>
+            <h2>Tabular &amp; Time-Series Data</h2>
+            <p>GENESIS is designed from the ground up to handle the two primary data structures found across industrial manufacturing environments. Each type is supported by a dedicated processing strategy, ensuring that both the statistical and temporal properties of the original data are faithfully captured and reproduced.</p>
+
+            <div class="showcase-grid">
+                <div class="card">
+                    <div class="feature-icon" style="margin-bottom:20px;">🗂️</div>
+                    <h3>Tabular Data</h3>
+                    <p>Tabular data is the most common format in manufacturing: structured records where each row represents a production sample, measurement, or quality inspection event, and each column carries a specific attribute — from continuous sensor readings to categorical defect codes and binary pass/fail labels.</p>
+                    <p>GENESIS trains a <strong>CTGAN</strong> (Conditional Tabular GAN) model on tabular inputs. CTGAN is specifically designed to handle the statistical challenges of real-world manufacturing tables: highly imbalanced class distributions, multi-modal continuous variables, and mixed numeric and categorical columns. After training, the model can generate new rows that faithfully replicate the joint distribution across all columns, preserving complex inter-feature correlations such as the relationship between temperature readings, cycle times, and defect occurrence rates.</p>
+                    <p>Supported column types include: continuous numeric values, discrete numeric values, ordinal categories, and nominal categories. Missing values and outliers are handled during preprocessing before training begins.</p>
+                </div>
+                <div class="card">
+                    <div class="feature-icon" style="margin-bottom:20px;">📈</div>
+                    <h3>Time-Series Data</h3>
+                    <p>Time-series data captures the temporal evolution of manufacturing processes: sequences of measurements recorded at regular or irregular intervals across one or more sensors, production cycles, or experimental runs. This structure is fundamental to predictive maintenance, anomaly detection, and process optimization use cases.</p>
+                    <p>For time-series inputs, GENESIS employs a <strong>VAE</strong> (Variational Autoencoder) architecture adapted to sequential data. The model learns a compact latent representation of the underlying temporal dynamics, encoding not just the distribution of individual values but also the autocorrelation structure and the characteristic patterns of variation across time. Experiment groupings and sequence boundaries are preserved during training, so that the model does not conflate measurements from different production runs or equipment instances.</p>
+                    <p>Generated time-series sequences respect temporal coherence: trends, periodic patterns, and transient events are reproduced in a statistically consistent manner. The training process requires real time-series data to learn these dynamics; once trained, the model can generate novel sequences that maintain the same temporal properties without resubmitting the original records.</p>
                 </div>
             </div>
         </section>
@@ -432,70 +478,77 @@
     </footer>
 
     <script>
-        // Funzionalità di ricerca nel testo
         const searchInput = document.getElementById('searchInput');
         let originalContent = {};
+        let matchElements = [];
+        let currentMatchIndex = -1;
+
+        function clearHighlights() {
+            Object.keys(originalContent).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = originalContent[id];
+            });
+            originalContent = {};
+            matchElements = [];
+            currentMatchIndex = -1;
+        }
+
+        function escapeRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function scrollToMatch(index) {
+            matchElements[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
 
         searchInput.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase().trim();
-            
-            // Rimuovi evidenziazioni precedenti
-            if (Object.keys(originalContent).length > 0) {
-                Object.keys(originalContent).forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.innerHTML = originalContent[id];
-                    }
-                });
-                originalContent = {};
-            }
-
-            // Se la ricerca è vuota, esci
+            clearHighlights();
+            const searchTerm = e.target.value.trim();
             if (searchTerm === '') return;
 
-            // Seleziona tutti gli elementi di testo da cercare
+            const regex = new RegExp('(' + escapeRegex(searchTerm) + ')', 'gi');
             const searchableElements = document.querySelectorAll('p, h1, h2, h3, h4, li, td, .card-tag');
-            let firstMatch = null;
 
-            searchableElements.forEach((element, index) => {
-                const text = element.textContent;
-                
-                if (text.toLowerCase().includes(searchTerm)) {
-                    // Salva il contenuto originale
+            searchableElements.forEach(function(element, index) {
+                if (element.textContent.toLowerCase().includes(searchTerm.toLowerCase())) {
                     const elementId = 'searchable-' + index;
                     element.id = elementId;
-                    if (!originalContent[elementId]) {
-                        originalContent[elementId] = element.innerHTML;
-                    }
-
-                    // Evidenzia il termine di ricerca
-                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    originalContent[elementId] = element.innerHTML;
                     element.innerHTML = element.innerHTML.replace(regex, '<span class="highlight">$1</span>');
-
-                    // Memorizza il primo match per lo scroll
-                    if (!firstMatch) {
-                        firstMatch = element;
-                    }
+                    matchElements.push(element);
                 }
             });
 
-            // Scroll al primo risultato
-            if (firstMatch) {
-                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (matchElements.length > 0) {
+                currentMatchIndex = 0;
+                scrollToMatch(0);
             }
         });
 
-        // Smooth scroll per i link di navigazione
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && matchElements.length > 0) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (e.shiftKey) {
+                    currentMatchIndex = (currentMatchIndex - 1 + matchElements.length) % matchElements.length;
+                } else {
+                    currentMatchIndex = (currentMatchIndex + 1) % matchElements.length;
                 }
+                scrollToMatch(currentMatchIndex);
+            }
+            if (e.key === 'Escape') {
+                clearHighlights();
+                searchInput.value = '';
+            }
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                var target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
             });
         });
     </script>
-
 </body>
 </html>
