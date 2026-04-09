@@ -260,11 +260,11 @@
             <img src="https://raw.githubusercontent.com/Engineering-Research-and-Development/autopilot/main/docs/imgs/eng.png" alt="Engineering Logo">
         </div>
         <div class="nav-links">
-            <a href="#showcase">Data Flows</a>
-            <a href="#overview">Overview</a>
+            <a href="#overview">Overview</a>          
             <a href="#features">Features</a>
             <a href="#uniqueness">Uniqueness</a>
             <a href="#datatypes">Data Types</a>
+            <a href="#showcase">Data Flows</a>
             <a href="#architecture">Architecture</a>
             <a href="#contact">Contact</a>
         </div>
@@ -295,45 +295,6 @@
     </header>
 
     <main>
-        <section id="showcase" class="container">
-            <span class="section-label">Data Flows</span>
-            <h2>How GENESIS Processes Manufacturing Data</h2>
-            <p>To understand how GENESIS operates in practice, consider a <strong>production line dataset lifecycle</strong>: from raw sensor ingestion, through adaptive model training, to synthetic data generation and quality validation.</p>
-
-            <div class="showcase-grid">
-                <div class="card">
-                    <span class="card-tag">1 - Ingest</span>
-                    <h3>Training Data Submission</h3>
-                    <p>Manufacturing data arrives as a JSON payload through the API. GENESIS automatically identifies the data type (tabular or time-series) and routes it through the appropriate preprocessing strategy. Sensor readings are normalized, categorical variables are encoded, and missing values are handled without manual intervention.</p>
-                </div>
-                <div class="card">
-                    <span class="card-tag">2 - Train</span>
-                    <h3>Dynamic Model Adaptation</h3>
-                    <p>The system analyzes the incoming data structure and immediately begins training. Hyperparameters are tuned dynamically based on data characteristics. For time-series inputs, temporal dependencies and experiment groupings are preserved throughout the learning process.</p>
-                </div>
-                <div class="card">
-                    <span class="card-tag">3 - Persist</span>
-                    <h3>Model Lifecycle Management</h3>
-                    <p>Once training completes, the model is saved alongside structural metadata and is ready for deployment. Trained models can be shared across multiple manufacturing facilities, versioned, and continuously improved through fine-tuning as new production data becomes available.</p>
-                </div>
-                <div class="card">
-                    <span class="card-tag">4 - Generate</span>
-                    <h3>Schema-Based or Data-Guided Inference</h3>
-                    <p>During inference, GENESIS operates in two modes. In schema-based mode, a structural metadata descriptor (data skeleton) communicates column types, constraints, and statistical properties to the trained model — enabling generation without resubmitting the original dataset. In data-guided mode, reference data steers the generation process for higher contextual fidelity.</p>
-                </div>
-                <div class="card">
-                    <span class="card-tag">5 - Transform</span>
-                    <h3>Function-Enhanced Generation</h3>
-                    <p>Custom functions encode manufacturing domain rules directly into the generation pipeline. Users define priority-ordered transformations (quality metric calculations, defect severity classifications, production parameter adjustments) that are applied either during generation from scratch or as post-processing over existing synthetic datasets.</p>
-                </div>
-                <div class="card">
-                    <span class="card-tag">6 - Evaluate</span>
-                    <h3>Integrated Quality Assessment</h3>
-                    <p>GENESIS calculates statistical distances between real and generated datasets, assesses distribution adherence, and measures sample novelty. Evaluation results are delivered as structured JSON reports for further inspection or downstream consumption.</p>
-                </div>
-            </div>
-        </section>
-
         <section id="features" class="container">
             <span class="section-label">Core Capabilities</span>
             <h2>Key Features</h2>
@@ -413,6 +374,45 @@
                     <p>Time-series data captures the temporal evolution of manufacturing processes: sequences of measurements recorded at regular or irregular intervals across one or more sensors, production cycles, or experimental runs. This structure is fundamental to predictive maintenance, anomaly detection, and process optimization use cases.</p>
                     <p>For time-series inputs, GENESIS employs a <strong>VAE</strong> (Variational Autoencoder) architecture adapted to sequential data. The model learns a compact latent representation of the underlying temporal dynamics, encoding not just the distribution of individual values but also the autocorrelation structure and the characteristic patterns of variation across time. Experiment groupings and sequence boundaries are preserved during training, so that the model does not conflate measurements from different production runs or equipment instances.</p>
                     <p>Generated time-series sequences respect temporal coherence: trends, periodic patterns, and transient events are reproduced in a statistically consistent manner. The training process requires real time-series data to learn these dynamics; once trained, the model can generate novel sequences that maintain the same temporal properties without resubmitting the original records.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="showcase" class="container">
+            <span class="section-label">Data Flows</span>
+            <h2>How GENESIS Processes Manufacturing Data</h2>
+            <p>To understand how GENESIS operates in practice, consider a <strong>production line dataset lifecycle</strong>: from raw sensor ingestion, through adaptive model training, to synthetic data generation and quality validation.</p>
+
+            <div class="showcase-grid">
+                <div class="card">
+                    <span class="card-tag">1 - Ingest</span>
+                    <h3>Training Data Submission</h3>
+                    <p>Manufacturing data arrives as a JSON payload through the API. GENESIS automatically identifies the data type (tabular or time-series) and routes it through the appropriate preprocessing strategy. Sensor readings are normalized, categorical variables are encoded, and missing values are handled without manual intervention.</p>
+                </div>
+                <div class="card">
+                    <span class="card-tag">2 - Train</span>
+                    <h3>Dynamic Model Adaptation</h3>
+                    <p>The system analyzes the incoming data structure and immediately begins training. Hyperparameters are tuned dynamically based on data characteristics. For time-series inputs, temporal dependencies and experiment groupings are preserved throughout the learning process.</p>
+                </div>
+                <div class="card">
+                    <span class="card-tag">3 - Persist</span>
+                    <h3>Model Lifecycle Management</h3>
+                    <p>Once training completes, the model is saved alongside structural metadata and is ready for deployment. Trained models can be shared across multiple manufacturing facilities, versioned, and continuously improved through fine-tuning as new production data becomes available.</p>
+                </div>
+                <div class="card">
+                    <span class="card-tag">4 - Generate</span>
+                    <h3>Schema-Based or Data-Guided Inference</h3>
+                    <p>During inference, GENESIS operates in two modes. In schema-based mode, a structural metadata descriptor (data skeleton) communicates column types, constraints, and statistical properties to the trained model — enabling generation without resubmitting the original dataset. In data-guided mode, reference data are used to evaluate synthetic data against real data.</p>
+                </div>
+                <div class="card">
+                    <span class="card-tag">5 - Transform</span>
+                    <h3>Function-Enhanced Generation</h3>
+                    <p>Custom functions encode manufacturing domain rules directly into the generation pipeline. Users define priority-ordered transformations, define boundaries, adding noise to data, or set a precise data behaviour that are applied either during generation from scratch or as post-processing over existing synthetic datasets.</p>
+                </div>
+                <div class="card">
+                    <span class="card-tag">6 - Evaluate</span>
+                    <h3>Integrated Quality Assessment</h3>
+                    <p>GENESIS calculates statistical distances between real and generated datasets, assesses distribution adherence, and measures sample novelty. Evaluation results are delivered as structured JSON reports for further inspection or downstream consumption.</p>
                 </div>
             </div>
         </section>
