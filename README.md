@@ -1,4 +1,4 @@
-![SDG-Logo.png](SDG-Logo.png)
+![SDG-Logo.png](https://raw.githubusercontent.com/eng-genesis/genesis/refs/heads/master/docs/images/genesis_logo.png)
 
 # ENGINEERING SYNTHETIC DATA GENERATOR 🌟
 
