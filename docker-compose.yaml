@@ -51,7 +51,7 @@ services:
       - database
     image: ghcr.io/engineering-research-and-development/synthetic_data_generator_middleware:latest
     ports:
-      - "8002:8001"
+      - "8001:8001"
     environment:
       POSTGRES_HOST: "database"
       POSTGRES_PORT: "5432"
@@ -79,7 +79,7 @@ services:
       GARAGE_PASSWORD: ${GARAGE_PWD}
       EPOCHS: 100
     ports:
-      - "8011:8010"
+      - "8010:8010"
   frontend:
     container_name: genesis-frontend
     image: ghcr.io/engineering-research-and-development/synthetic_data_generator_frontend:latest
