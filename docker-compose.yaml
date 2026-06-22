@@ -1,14 +1,13 @@
 services:
   database:
-    container_name: sdg-database
+    container_name: genesis-database
     image: "postgres:latest"
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "postgres"
-
   couchDb:
     container_name: couch
     image: "couchdb:latest"
@@ -21,7 +20,6 @@ services:
       - ./couchdb_data:/opt/couchdb/data
       - ./couchdb_config:/opt/couchdb/etc/local.d
       - ./couchdb_log:/opt/couchdb/var/log
-
   couchdb-init:
     image: curlimages/curl:latest
     depends_on:
@@ -32,29 +30,28 @@ services:
       COUCHDB_PASSWORD: "password"
       COUCHDB_DB: "model_results"
     entrypoint: >
-      sh -c "
-        echo 'Waiting for CouchDB to be ready...';
-        until curl -s http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_all_dbs; do sleep 5; done;
-        echo 'CouchDB is ready. Running initialization scripts...';
-        curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_users;
-        curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_replicator;
-        curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_global_changes;
-        curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/$${COUCHDB_DB};
-        curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/$${COUCHDB_DB}/_security -d '{ \
-          \"admins\": { \"names\": [], \"roles\": [\"_admin\"] },
-          \"members\": { \"names\": [], \"roles\": [] }
-        }'
-        curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_node/nonode@nohost/_config/chttpd/enable_cors -d '\"true\"'
-        curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_node/nonode@nohost/_config/cors/origins -d '\"*\"'
-      "
-
-  sdg-middleware:
-    container_name: sdg-middleware
+        sh -c "
+          echo 'Waiting for CouchDB to be ready...';
+          until curl -s http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_all_dbs; do sleep 5; done;
+          echo 'CouchDB is ready. Running initialization scripts...';
+          curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_users;
+          curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_replicator;
+          curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_global_changes;
+          curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/$${COUCHDB_DB};
+          curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/$${COUCHDB_DB}/_security -d '{ \
+            \"admins\": { \"names\": [], \"roles\": [\"_admin\"] },
+            \"members\": { \"names\": [], \"roles\": [] }
+          }'
+          curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_node/nonode@nohost/_config/chttpd/enable_c… -d '\"true\"'
+          curl -X PUT http://$${COUCHDB_USER}:$${COUCHDB_PASSWORD}@couch:5984/_node/nonode@nohost/_config/cors/origins -d '\"*\"'
+        "
+  middleware:
+    container_name: genesis-middleware
     depends_on:
       - database
     image: ghcr.io/engineering-research-and-development/synthetic_data_generator_middleware:latest
     ports:
-      - "8001:8001"
+      - "8002:8001"
     environment:
       POSTGRES_HOST: "database"
       POSTGRES_PORT: "5432"
@@ -63,11 +60,11 @@ services:
       POSTGRES_DB: "postgres"
       GENERATOR_URL: "http://generator:8010"
       ALLOWED_ORIGINS: '*'
-
+      
   generator:
-    container_name: sdg-generator
+    container_name: genesis-generator
     depends_on:
-      - sdg-middleware
+      - middleware
       - couchDb
     image: ghcr.io/engineering-research-and-development/synthetic_data_generator_server:latest
     environment:
@@ -75,13 +72,19 @@ services:
       COUCHDB_PASSWORD: "password"
       COUCHDB_DB: "model_results"
       COUCHDB_HOST: "couch"
-      MIDDLEWARE_URL: "http://sdg-middleware:8001/"
-      EPOCHS: 1
+      MIDDLEWARE_URL: "http://middleware:8001/"
+      GARAGE_MODEL_BUCKET: "trained-models"
+      GARAGE_URL: "garages3.sicuro.duckdns.org"
+      GARAGE_USERNAME: ${GARAGE_USERNAME}
+      GARAGE_PASSWORD: ${GARAGE_PWD}
+      EPOCHS: 100
     ports:
-      - "8010:8010"
-
+      - "8011:8010"
   frontend:
-    container_name: sdg-frontend
-    image: ghcr.io/engineering-research-and-development/synthetic_data_generator_frontend:v0.0.5
+    container_name: genesis-frontend
+    image: ghcr.io/engineering-research-and-development/synthetic_data_generator_frontend:latest
     ports:
       - "5173:3000"
+    environment:
+      PUBLIC_BACKENDURL: "https://sdg.sicuro.duckdns.org/api"
+      PUBLIC_COUCHURL: "https://sdg.sicuro.duckdns.org/checkResults"
